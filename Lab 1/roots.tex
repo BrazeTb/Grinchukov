@@ -126,6 +126,134 @@ a^k\equiv1 \pmod{n}\tag*{$k\geq{1}$}
 	Предположим для начала, что $k|h$, то есть $h=jk$ для некоторого целого $j$. Так как $a^k\equiv1\pmod{n}$, Теорема 4-2 гласит, что $(a^k)^j\equiv1^j\pmod{n}$ или $a^h\equiv1\pmod{n}$.
 	
 	Напротив, пусть $h$ -- любое положительное целое число, удовлетворяющее условию $a^h\equiv1\pmod{n}$. Согласно алгоритму деления существуют такие числа $q$ и $r$, что $h=qk+r$, где $0\leq{r}<k$. Следовательно $$a^h=a^{qk+r}=(a^k)^qa^r.$$	
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode} 
+
+\pagestyle{fancy}
+
+\fancypagestyle{first}{
+\setcounter{page}{156}
+\renewcommand{\headrulewidth}{0pt} 
+}
+\fancypagestyle{fancyEven}{
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt} 
+\lhead{\textbf{\thepage}}
+\chead{\textbf{Примитивные корни и индексы}}
+\rhead{\textbf{Глава 8}}
+}
+\fancypagestyle{fancyOdd}{
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt} 
+\lhead{\textbf{Часть 8-1}}
+\chead{\textbf{Порядок числа по модулю $n$}}
+\rhead{\textbf{\thepage}}
+}
+\newcommand*\PROB\Pr 
+\DeclareMathOperator*{\EXPECT}{\mathbb{E}}
+
+% Sets, Rngs, ets 
+\newcommand{\N}{{{\mathbb N}}}
+\newcommand{\Z}{{{\mathbb Z}}}
+\newcommand{\R}{{{\mathbb R}}}
+\newcommand{\Zp}{\ints_p} % Integers modulo p
+\newcommand{\Zq}{\ints_q} % Integers modulo q
+\newcommand{\Zn}{\ints_N} % Integers modulo N
+
+% Landau 
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand*{\OLandau}{\bigO}
+\newcommand*{\WLandau}{\Omega}
+\newcommand*{\xOLandau}{\widetilde{\OLandau}}
+\newcommand*{\xWLandau}{\widetilde{\WLandau}}
+\newcommand*{\TLandau}{\Theta}
+\newcommand*{\xTLandau}{\widetilde{\TLandau}}
+\newcommand{\smallo}{o} %technically, an omicron
+\newcommand{\softO}{\widetilde{\bigO}}
+\newcommand{\wLandau}{\omega}
+\newcommand{\negl}{\mathrm{negl}} 
+
+% Misc
+\newcommand{\eps}{\varepsilon}
+\newcommand{\inprod}[1]{\left\langle #1 \right\rangle}
+
+\newcommand{\handout}[5]{
+  \noindent
+  \begin{center}
+  \framebox{
+    \vbox{
+      \hbox to 5.78in { {\bf Научно-исследовательская практика} \hfill #2 }
+      \vspace{4mm}
+      \hbox to 5.78in { {\Large \hfill #5  \hfill} }
+      \vspace{2mm}
+      \hbox to 5.78in { {\em #3 \hfill #4} }
+    }
+  }
+  \end{center}
+  \vspace*{4mm}
+}
+
+\newcommand{\lecture}[4]{\handout{#1}{#2}{#3}{Scribe: #4}{Примитивные корни и индексы #1}}
+
+\newtheorem{theorem}{Теорема}
+\newtheorem{lemma}{Лемма}
+\newtheorem{definition}{Определение}
+\newtheorem{corollary}{Следствие}
+\newtheorem{fact}{Факт}
+
+% 1-inch margins
+\topmargin 0pt
+\advance \topmargin by -\headheight
+\advance \topmargin by -\headsep
+\textheight 8.9in
+\oddsidemargin 0pt
+\evensidemargin \oddsidemargin
+\marginparwidth 0.5in
+\textwidth 6.5in
+
+\parindent 0in
+\parskip 1.5ex
+
+\begin{document}
+\thispagestyle{empty}
+\lecture{}{Лето 2020}{}{Владимир Гринчуков}
+
+
+	
+\begin{Large}\textbf{8.1 Порядок числа по модулю n} \end{Large}\\
+\thispagestyle{first}
+Из теоремы Эйлера нам известно, что $a^{\phi(n)}\equiv 1\pmod{n}$, когда $\text{НОД}(a,n)=1$. Тем не менее часто существуют степени $a$, меньшие, чем $a^{\phi(n)}$, но сравнимые с $1$ по модулю $n$. Отсюда следует определение:
+\begin{definition}
+	Пусть $n>1$ и $\text{НОД}(a,n)=1$. \emph {Порядком $a$ по модулю $n$} (в более старой терминологии: \emph{показатель степени, к которому принадлежит $a$ по модулю $n$}) называется наименьшее положительное целое число $k$ такое, что $a^k\equiv 1\pmod{n}$.
+\end{definition}
+
+Последовательно рассмотрим степени 2 по модулю 7. Для этого модуля получаем сравнения $$2^1\equiv2,\; 2^2\equiv4,\; 2^3\equiv1,\; 2^4\equiv2,\; 2^5\equiv4,\; 2^6\equiv1,\; ...,$$ из которых следует, что целое число 2 имеет по модулю 7 порядок равный 3.\\
+
+Заметим, что если два целых числа сравнимы по модулю $n$, то они имеют один и тот же порядок по этому модулю. Так как $a\equiv b\pmod{n}$ и $a^k\equiv 1\pmod{n}$, из Теоремы 4-2 следует, что $a^k\equiv b^k\pmod{n}$, откуда $b^k\equiv 1\pmod{n}$.
+
+Необходимо подчеркнуть, что наше определение порядка по модулю $n$ учитывает только такие числа $a$, для которых $\text{НОД}(a,n)=1$. Действительно, если $\text{НОД}(a,n)>1$, то мы из Теоремы 4-7 знаем, что линейное сравнение $ax\equiv1\pmod{n}$ не имеет решений; таким образом отношение
+\begin{align}
+a^k\equiv1 \pmod{n}\tag*{$k\geq{1}$}
+\end{align}
+не может иметь силы, так как это означало бы, что $x=a^{k-1}$ -- решение сравнения $ax\equiv 1\pmod{n}$. Таким образом, если упоминается порядок порядок $a$ по модулю $n$, предполагается, что $\text{НОД}(a,n)=1$, даже если явно это не указано.
+
+В примере, данном выше, $2^k\equiv1\pmod{7}$, когда $k$ кратно 3, порядку числа 2 по модулю 7. Наша первая теорема показывает, что в общем случае это типичная ситуация.
+\begin{theorem}
+	\it Пусть целое число $a$ имеет по модулю $n$ порядок $k$. Тогда $a^h\equiv1\pmod{n}$ тогда и только тогда, когда $k|h$; в частности $k|\phi(n)$
+\end{theorem}
+\newpage
+\thispagestyle{fancyOdd}
+\begin{proof}
+	Предположим для начала, что $k|h$, то есть $h=jk$ для некоторого целого $j$. Так как $a^k\equiv1\pmod{n}$, Теорема 4-2 гласит, что $(a^k)^j\equiv1^j\pmod{n}$ или $a^h\equiv1\pmod{n}$.
+	
+	Напротив, пусть $h$ -- любое положительное целое число, удовлетворяющее условию $a^h\equiv1\pmod{n}$. Согласно алгоритму деления существуют такие числа $q$ и $r$, что $h=qk+r$, где $0\leq{r}<k$. Следовательно $$a^h=a^{qk+r}=(a^k)^qa^r.$$	
 	По предположению $a^h\equiv1\pmod{n}$ и $a^k\equiv1\pmod{n}$, откуда $a^r\equiv1\pmod{n}$. Так как $0\leq{r}<k$, приходим к тому, что $r=0$; другими словами выбор $k$ как наименеьшего положительного целого числа такого, что $a^k\equiv1\pmod{n}$ вызывает противоречие. Таким образом $h=qk$ и $k|h$.
 \end{proof}
 
@@ -154,13 +282,13 @@ a^k\equiv1 \pmod{n}\tag*{$k\geq{1}$}
 
 Может возникнуть справедливый вопрос: возможно ли выразить порядок степеней $a$ через через порядок самого $a$?
 \begin{theorem}
-	\it Если целое число $a$ имеет порядок $k$ по модулю $n$ и $h>0$, тогда $a^h$ имеет порядок $k/$НОД$(h,k)$ по модулю $n$.
+	\it Если целое число $a$ имеет порядок $k$ по модулю $n$ и $h>0$, тогда $a^h$ имеет порядок $k/\text{НОД}(h,k)$ по модулю $n$.
 \end{theorem}
 \begin{proof}
-    Пусть $d=$НОД$(h,k)$. Тогда можно написать $h=h_1d$ и $k=k_1d$, где НОД$(h_1,k_1)=1$. Очевидно, что $$(a^h)^{k_1}=(a^{h_1d})^{k/d}=(a^k)^{h_1}\equiv1\pmod{n}.$$
-    Если предполагается, что $a^h$ имеет по модулю $n$ порядок $r$, то по Теореме 8-1 $r|k_1$. С другой стороны, порядок $a$ по модулю $n$ равен $k$, следовательно сравнение $$a^{hr}\equiv(a^h)^r\equiv1\pmod{n}$$ указывает, что $k|hr$; другими словами, $k_1d|h_1dr$ или $k_1|h_1r$. Но НОД$(k_1,h_1)=1$, а значит, что $k_1|r$. Это отношение делимости, с учетом ранее сказанного, дает
+    Пусть $d=\text{НОД}(h,k)$. Тогда можно написать $h=h_1d$ и $k=k_1d$, где $\text{НОД}(h_1,k_1)=1$. Очевидно, что $$(a^h)^{k_1}=(a^{h_1d})^{k/d}=(a^k)^{h_1}\equiv1\pmod{n}.$$
+    Если предполагается, что $a^h$ имеет по модулю $n$ порядок $r$, то по Теореме 8-1 $r|k_1$. С другой стороны, порядок $a$ по модулю $n$ равен $k$, следовательно сравнение $$a^{hr}\equiv(a^h)^r\equiv1\pmod{n}$$ указывает, что $k|hr$; другими словами, $k_1d|h_1dr$ или $k_1|h_1r$. Но $\text{НОД}(k_1,h_1)=1$, а значит, что $k_1|r$. Это отношение делимости, с учетом ранее сказанного, дает
     \begin{center}
-    $r=k_1=k/d=k/d=k/$НОД$(h,k)$,
+    $r=k_1=k/d=k/d=k/\text{НОД}(h,k)$,
     \end{center}
     что доказывает теорему.
 \end{proof}
@@ -168,7 +296,7 @@ a^k\equiv1 \pmod{n}\tag*{$k\geq{1}$}
 Последняя теорема имеет следствие, доказательно которого может быть предоставлено читателем.
 
 \begin{corollary}
-	\it Пусть $a$ имеет порядок $k$ по модулю $n$. Тогда $a^h$ также имеет порядок $k$ тогда и только тогда, когда НОД$(h,k)=1$.
+	\it Пусть $a$ имеет порядок $k$ по модулю $n$. Тогда $a^h$ также имеет порядок $k$ тогда и только тогда, когда $\text{НОД}(h,k)=1$.
 \end{corollary}
 
 Давайте посмотрим, как все это работает, на конкретном случае.\\
@@ -187,14 +315,14 @@ a^k\equiv1 \pmod{n}\tag*{$k\geq{1}$}
 
 Видно, что порядок 2 по модулю 13 равен 12, в то время как порядки $2^2$ и $2^3$ равны 6 и 4 соответственно; легко проверить, что
 \begin{center}
-    $6=12/$НОД$(2,12)$ и $4=12/$НОД$(3,12)$
+    $6=12/\text{НОД}(2,12)$ и $4=12/\text{НОД}(3,12)$
 \end{center}
-в соответствии с Теоремой 8-3. Те числа, которые имеют по модулю 13 порядок 12, являются степенями $2^k$, где НОД$(k,12)=1$, а именно $$2^5\equiv6,\;2^7\equiv11,\;2^{11}\equiv7\pmod{13}.$$
+в соответствии с Теоремой 8-3. Те числа, которые имеют по модулю 13 порядок 12, являются степенями $2^k$, где $\text{НОД}(k,12)=1$, а именно $$2^5\equiv6,\;2^7\equiv11,\;2^{11}\equiv7\pmod{13}.$$
 
 Если целое число $a$ имеет наибольший возможный порядок, оно называется примитивным корнем $n$.
 
 \begin{definition}
-	Если НОД$(a,n)=1$ и порядок $a$ по модулю $n$ равен $\phi(n)$, тогда $a$ -- \emph{примитивный корень} $n.$
+	Если $\text{НОД}(a,n)=1$ и порядок $a$ по модулю $n$ равен $\phi(n)$, тогда $a$ -- \emph{примитивный корень} $n.$
 \end{definition}
 
 Другими словами, $n$ имеет примитивный корень $a$, если $a^{\phi(n)}\equiv1\pmod{n}$, но $a^k\not\equiv1\pmod{n}$ для любого положительного $k<\phi(n)$.
